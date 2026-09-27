@@ -1,5 +1,6 @@
 /* Icelandic source text and English translations. */
 const englishTranslations = {
+  "Thrividdarkort ↗": "Explore in 3D ↗",
   "Beint í söguna": "Skip to the story",
   "Lítill heimur. Stórir möguleikar.": "A little world. Big possibilities.",
   "Hvernig virkar þetta?": "How does it work?",

@@ -25,3 +25,7 @@ JavaScript-málskipan í `app.js` og `day.js` stenst yfirferð. Gagnapróf stað
 Smellur á merkið skiptir milli íslensku og ensku. Í ensku er merkið „after-school / LEIKURINN“. Valinn kafli, tími, svör og skoðaðir staðir haldast. Tungumálaval vistast í localStorage þegar vafrinn leyfir það. Þýðingar eru í `translations.js`; `language.js` þýðir sýnilegan texta og aðgengismerkingar, þar á meðal nýjan texta eftir samskipti. Frumtexti er varðveittur svo hægt sé að skipta aftur á íslensku. Engin netþjónusta er notuð.
 
 Þýðingar allra tímalýsinganna, breytilegrar framvindu og kaflamerkinga hafa verið yfirfarnar með keyrsluprófum. Tungumálaskipti og endurheimt íslensks texta hafa verið prófuð með DOM-líkani; sjónprófun í raunverulegum vafra er eftir.
+
+## Thrividdarkort
+
+Nýtt sjálfstætt Three.js-gönguverkefni er í [`thrividdarkort/`](thrividdarkort/README.md). Ræstu staðbundinn vefþjón og opnaðu `/thrividdarkort/`. Tengill neðst í bæklingnum opnar það. Grunnmynd aðalhæðar er rakin eftir opinberum uppdrætti, með áætluðum viðbótum sem eru tilgreindar í heimildayfirliti. [Grunnhugsun framtíðarhermunar](thrividdarkort/FUNDAMENTALS.md) er í sérstöku skjali.

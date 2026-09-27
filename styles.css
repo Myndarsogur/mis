@@ -15,3 +15,5 @@ button.brand{border:0;background:none;text-align:left;padding:0;flex-shrink:0}.b
 @media(max-width:480px){html[lang="en"] header>.quiet{max-width:145px;text-align:right}html[lang="en"] .brand{font-size:25px}html[lang="en"] .primary{font-size:13px;gap:14px}}
 
 .brand .language-globe{display:block;width:23px;height:23px;transform:rotate(8deg)}.brand small{margin-top:5px}
+
+.spatial-link{font-size:11px;color:var(--green);text-decoration:none;white-space:nowrap}.spatial-link:hover{text-decoration:underline}
