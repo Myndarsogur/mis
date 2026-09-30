@@ -82,7 +82,7 @@ body>header{padding:10px 24px;min-height:58px;gap:22px}header #steps{margin-left
 }
 @media(max-width:360px){header .header-clock{font-size:12px;padding-left:4px}header #steps button,.game-mode #steps button,.assignment-mode #steps button{font-size:9px;padding:7px 5px}.game-mode .brand>span,.assignment-mode .brand>span{font-size:13px}.game-top #game-title{font-size:17px}.simulation-clocks .analog-clock{width:33px;height:33px}.simulation-clocks time{font-size:23px;min-width:56px}}
 /* One title typeface and a simple, stacked wordmark. */
-@font-face{font-family:'KN Yuanmo SC';src:url('../KNYuanmo-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+
 h1,h2,h3,.game-top #game-title,.assignment-mode #heading,.schedule-heading h2,.role-head strong,.school-label,.brand-words{font-family:'KN Yuanmo SC',Arial,sans-serif!important;font-weight:400!important}
 button.brand{gap:9px;align-items:center}.brand-dot{display:block;width:27px;height:27px;border-radius:50%;background:#39734b;flex:0 0 27px}button.brand .brand-words{display:flex;flex-direction:column;align-items:flex-start;gap:1px;line-height:1;margin:0;letter-spacing:0}button.brand .brand-words .brand-kicker{display:block;margin:0;font-size:11px;letter-spacing:1px;line-height:1.1}button.brand .brand-words .brand-name{display:block;margin:0;font-size:25px;letter-spacing:-.4px;line-height:1.05}.game-legend small{font-size:inherit}
 @media(max-width:600px){button.brand{gap:5px}.brand-dot{width:19px;height:19px;flex-basis:19px}button.brand .brand-words .brand-kicker{font-size:8px;letter-spacing:.4px}button.brand .brand-words .brand-name{font-size:18px;letter-spacing:-.4px}.game-legend{gap:4px 9px}.game-legend>span{gap:3px}}
@@ -96,3 +96,44 @@ body>header{padding:9px 22px;gap:16px;background:#f6f4ed;min-height:60px}header 
 /* The role card: title, illustration/location, then the uninterrupted schedule. */
 #role-dialog .schedule-heading{padding:23px 28px 18px;background:transparent}#role-dialog .schedule-heading h2{font-size:33px;line-height:1.2;padding-right:75px;margin:0}.role-illustration{margin:0 26px 12px;text-align:center}.role-illustration>img{display:block;width:min(100%,420px);height:auto;border-radius:12px;margin:0 auto}.role-location{font-size:13px;line-height:1.6;color:#63715c;margin:0 28px 16px}.role-illustration .role-location{margin:12px 0 0}#role-dialog .schedule-body{padding-top:0}#role-dialog .schedule{margin-top:10px}.schedule .schedule-time{font-family:'KN Yuanmo SC',Arial,sans-serif;font-size:16px;line-height:1.3;font-weight:400;letter-spacing:0}#role-dialog .schedule li p{font-family:Arial,Helvetica,sans-serif}
 @media(max-width:600px){#role-dialog .schedule-heading{padding:20px 20px 14px}#role-dialog .schedule-heading h2{font-size:29px}.role-illustration{margin:0 20px 12px}.role-location{margin:0 20px 14px;font-size:12px}.schedule .schedule-time{font-size:14px}#role-dialog .schedule li{grid-template-columns:91px minmax(0,1fr);gap:10px}}
+
+/* The day header and a scalable, illustrated clock share the same colour key. */
+#header-game{flex:1;min-width:0;gap:20px}.header-day{flex:1;min-width:0;max-width:660px}.header-day h1{font-size:clamp(22px,2.3vw,35px);line-height:1.12;letter-spacing:0;margin:0}.header-day .game-description{font-size:13px;line-height:1.4;margin:5px 0 0;max-width:560px}.assignment-mode .header-day{display:none}
+#header-game .simulation-clocks{position:relative;display:grid;justify-items:center;gap:2px;flex-shrink:0}#clock-expand{padding:0;background:transparent;color:inherit;border-radius:48% 52% 46% 54%;line-height:0}#header-game .analog-clock{width:78px;height:78px}#header-game time{font-family:'KN Yuanmo SC',Arial,sans-serif;font-size:24px;text-align:center;padding:4px 10px;border-radius:42% 48% 38% 45%;min-width:80px;letter-spacing:0;color:#293c32;transition:background .3s}
+.header-playback{flex-wrap:wrap;max-width:175px;justify-content:center}.header-playback #game-play{width:100%;border-radius:12px 16px 11px 17px;background:#d9e8c2;color:#304c37;border:1.5px solid #728963}.header-playback #game-reset{width:43px;height:37px;background:#f3c6a5;border:1.5px solid #997256;border-radius:12px 9px 13px 8px}.header-playback #game-reset svg{width:28px;height:22px;vertical-align:middle}.header-playback select{font-family:'KN Yuanmo SC',Arial,sans-serif;font-size:22px;padding:3px 8px;background:#e6dcf1;border:1.5px solid #9480a5;border-radius:9px 13px 8px 12px;max-width:85px}
+.clock-key{display:none}.simulation-clocks.expanded .clock-key{display:grid;gap:10px}.clock-key>span{display:grid;grid-template-columns:12px 1fr;gap:3px 8px;text-align:left;font-size:14px}.clock-key i{width:10px;height:10px;border-radius:40%;margin-top:3px}.clock-key small{grid-column:2;color:#61705c;font-size:11px}#header-game .simulation-clocks.expanded{position:fixed;z-index:20;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(360px,calc(100vw - 32px));padding:22px;gap:12px;border:2px solid #75856a;border-radius:35px 29px 39px 25px;background:#fffdf5;box-shadow:0 15px 80px #203b3655}#header-game .expanded .analog-clock{width:230px;height:230px}#header-game .expanded time{font-size:38px}
+.game-scrub{margin:2px 0 5px;gap:4px}.game-scrub>span{font-family:'KN Yuanmo SC',Arial,sans-serif;font-size:14px}.game-scrub input{appearance:none;-webkit-appearance:none;height:12px;border:1px solid #748269;border-radius:46% 32% 44% 28%;background:linear-gradient(to right,#edb5cd 0% 16.667%,#b7dff0 16.667% 22.222%,#bc9472 22.222% 41.667%,#8cc5b0 41.667% 72.222%,#f0d36c 72.222% 77.778%,#bc9472 77.778% 98%,#b7dff0 98% 100%);overflow:visible}.game-scrub input::-webkit-slider-thumb{appearance:none;width:23px;height:25px;border:2px solid #3e5641;border-radius:42% 54% 39% 48%;background:#fffdf5;box-shadow:2px 2px 0 #3e56412b}.game-scrub input::-moz-range-thumb{width:20px;height:22px;border:2px solid #3e5641;border-radius:42% 54% 39% 48%;background:#fffdf5}.game-count{margin:0 auto 0 0}.school-label{font-size:25px}.role-story p>span{font-size:16px;line-height:1.3}.assignment-layout .role-head strong{font-size:23px}.assignment-layout .role-caption,.assignment-layout .where{font-size:14px;line-height:1.5}
+@media(max-width:900px){body>header{gap:10px;padding:8px 12px}#header-game{gap:12px}.header-day .game-description{font-size:11px}.header-playback{max-width:120px}.header-playback #game-play{min-width:0;font-size:11px;padding:8px}#header-game .analog-clock{width:64px;height:64px}}
+@media(max-width:600px){#header-game{display:grid;grid-template-columns:minmax(0,1fr) 65px 95px;gap:8px}.header-day h1{font-size:21px}.header-day .game-description{font-size:10px;line-height:1.3}#header-game .analog-clock{width:61px;height:61px}#header-game time{font-size:20px;min-width:61px;padding:3px 5px}.header-playback{gap:4px}.header-playback #game-reset{width:34px;min-width:34px;height:32px}.header-playback select{font-size:18px;max-width:57px;padding:2px}.assignment-mode #header-game{display:flex;justify-content:space-between}.game-scrub>span{font-size:11px}.school-label{font-size:23px}.role-story p>span{font-size:15px}.assignment-layout .role-head strong{font-size:17px}.assignment-layout .role-caption,.assignment-layout .where{font-size:12px}}
+
+/* Brand and clock on the left, day story in the middle, controls on the right. */
+body>header,.game-mode>header,.assignment-mode>header{display:grid;grid-template-columns:175px minmax(0,1fr) 175px;grid-template-rows:auto auto;align-items:center;gap:5px 24px;padding:12px 24px}
+#header-game,.assignment-mode #header-game{display:contents}
+body>header .brand{grid-column:1;grid-row:1;justify-self:center;margin:0}
+body>header #steps{grid-column:3;grid-row:1;justify-self:center;margin:0}
+#header-game .simulation-clocks{grid-column:1;grid-row:2;justify-self:center;align-self:start}
+.header-day{grid-column:2;grid-row:1 / 3;justify-self:center;text-align:center;width:100%;max-width:660px}
+.header-day .game-description{margin:9px auto 0;font-size:14px;line-height:1.5}
+.header-playback{grid-column:3;grid-row:2;justify-self:center;align-self:start;width:100%;max-width:175px;gap:7px}
+.header-playback #game-play{font-family:'KN Yuanmo SC',Arial,sans-serif;font-weight:400;font-size:21px;line-height:1.2;padding:10px}
+@media(max-width:900px){body>header,.game-mode>header,.assignment-mode>header{grid-template-columns:135px minmax(0,1fr) 135px;column-gap:16px;padding:10px 14px}.header-day .game-description{font-size:12px}.header-playback #game-play{font-size:18px}}
+@media(max-width:600px){body>header,.game-mode>header,.assignment-mode>header{grid-template-columns:76px minmax(0,1fr) 91px;gap:6px 8px;padding:8px}.header-day h1{font-size:20px;overflow-wrap:normal}.header-day .game-description{font-size:10px;line-height:1.4;margin-top:7px}body>header .brand{gap:3px;padding:0}body>header .brand-dot{display:none}body>header .brand-name{font-size:16px}body>header .brand-kicker{font-size:8px}.header-playback{gap:5px}.header-playback #game-play{font-size:15px;padding:8px 4px;min-width:0}.header-playback #game-reset{width:30px;min-width:30px}.header-playback select{max-width:56px}body>header #steps button{padding:6px 12px}}
+
+@media(max-width:360px){.header-day h1{font-size:16px}body>header .brand-name{font-size:14px}.header-playback #game-play{font-size:14px}}
+
+/* Keep the compact wordmark anchored just right of the clock centre. */
+body>header button.brand{position:relative;justify-self:center;transform:translateX(5px);padding:0;gap:0}
+body>header button.brand .brand-words{align-items:center}
+body>header button.brand .brand-words .brand-name{font-size:20px;letter-spacing:-.4px}
+body>header button.brand .brand-words .brand-kicker{font-size:9px;letter-spacing:.5px}
+body>header button.brand>small{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:5px!important}
+@media(max-width:600px){body>header button.brand{transform:translateX(3px)}body>header button.brand .brand-words .brand-name{font-size:13px}body>header button.brand .brand-words .brand-kicker{font-size:7px}body>header button.brand>small{margin-left:2px!important;font-size:6px!important;padding:2px!important}}
+
+/* Stack each kicker over the left edge of its name. */
+body>header button.brand .brand-words{align-items:flex-start}
+html[lang="en"] body>header button.brand{transform:translateX(9px)}
+@media(max-width:600px){html[lang="en"] body>header button.brand{transform:translateX(5px)}}
+
+/* Original block-style eth; real text remains selectable and accessible. */
+
+#header-game .simulation-clocks.expanded{max-height:calc(100dvh - 24px);overflow-y:auto}

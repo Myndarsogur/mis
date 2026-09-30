@@ -3,3 +3,6 @@
 .floor-picker{display:flex;align-items:center;gap:6px;margin-left:auto;margin-right:10px}.floor-picker select{font-size:12px;padding:7px}.stair-label{font-size:9px;background:#f6dfbde8}.map-tools{gap:8px}@media(max-width:750px){.map-tools{top:10px;left:10px;right:10px;flex-wrap:wrap}.map-tools>span{display:none}.floor-picker{margin-left:0}.floor-picker select{max-width:145px}}
 
 .label-subtitle{display:block;font-size:8px;font-weight:400;color:#64756c;border-top:1px solid #d7dece;margin-top:2px;padding-top:2px}body[data-floor-view="upper"] .label-subtitle{display:none}.stair-junior{transform:translate(0,-100%)}.stair-workshop{transform:translate(-100%,-100%)}
+
+/* Match the headings and wordmark used across the other views. */
+h1,h2,header strong{font-family:Yuanmo,'Trebuchet MS',sans-serif;font-weight:400}

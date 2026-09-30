@@ -46,19 +46,19 @@ The top toolbar contains the simulated analogue/digital clock, Play afternoon / 
 
 Below the toolbar are the current day heading, a short description, the time slider and the age-group legend. The heading follows the requested schedule:
 
-- 13:30: everyone arrives for work.
-- 14:00: children are collected and checked in; from 14:01 the heading reads Outdoor time until 14:45.
+- 13:30: preparation has begun.
+- 14:00: welcoming children; the heading changes to Outdoor time at 14:10.
 - 14:45: activity stations open.
-- 15:45: activity stations close; from 15:46 the heading reads Outdoor time until closing.
+- 15:40: tidying up; from 15:50 the heading reads Outdoor time until closing.
 - 16:30: everyone is home.
 
-The heading and description update during playback and seeking, in either language. Arrival and station-closing messages are displayed for their first simulated minute before switching to outdoor time.
+The heading and description update during playback and seeking, in either language. Reception and tidying each have ten simulated minutes before the heading switches to outdoor time.
 
 Seven irregular, rounded colour areas adapt to the actual remaining screen space. Desktop places the garden alongside the indoor spaces; portrait layouts place it below them. The SVG view box matches the available aspect ratio so text and pieces retain their proportions. Each area has a short activity sentence. Named guide pieces wear their role colours and move according to their schedules; there are no fixed staff-name lists inside the areas.
 
 There are exactly **111 child pieces**: 23 pink (Kindergarten / 5 ára), and 22 each in blue (1st grade / 1. bekkur), green (2nd grade / 2. bekkur), orange (3rd grade / 3. bekkur) and purple (4th grade / 4. bekkur). The age split and school layout are illustrative, not live attendance or a measured floor plan.
 
-Children arrive through Registration, then settle in Kindergarten or outdoors. At 14:45 the youngest group goes outside and older children rotate through indoor activities. At 15:45 the older children return outside; departures run until 16:30. Dining staffing is split: the first guide stays inside, while the other dining guides help outdoors before 14:45 and from 15:45. With three assigned dining guides, this means one inside and two outside at the start and end.
+Children arrive through Registration, then settle in Kindergarten or outdoors. At 14:45 the youngest group goes outside and older children rotate through indoor activities. At 15:50 the older children return outside; departures run until 16:30. Dining staffing is split: the first guide stays inside, while the other dining guides help outdoors before 14:45 and from 15:50. With three assigned dining guides, this means one inside and two outside at the start and end.
 
 ### Validation
 
@@ -69,3 +69,9 @@ Chrome checks cover playback, Break, restart, time seeking, schedule dialogs, la
 The simulation and layout are in `fristundaspil/game.js`, schedules and short activity text in `schedules.js`, and Icelandic translations in `language.js`.
 
 Role dialogs show the role title, a matching illustration, location and full schedule. All seven roles have warm, simple illustrations with accessible descriptions in Icelandic and English. Images are in `fristundaspil/assets/`; the exact built-in image generation prompts are recorded in [the illustration manifest](fristundaspil/assets/role-illustrations.prompts.md) and [the registration prompt](fristundaspil/assets/registration-guide.prompt.md). Schedule times use KN Yuanmo SC while description text retains Arial. Names are assigned from the main role board, and custom locations remain visible.
+
+The day heading and description now sit in the toolbar, above a hand-drawn-style colour timeline. The scalable SVG clock marks preparation, outdoor sessions, activity stations and home time; click it to enlarge and see the colour key, then click again or press Escape to shrink. Digital time and speed use KN Yuanmo; rewind uses a drawn SVG because that glyph is absent from the font. Clock and timeline colours share the daily schedule. Board labels and activity descriptions are larger.
+
+The clock palette is pink for preparation, light blue for reception and home time, brown for outdoor play, green for stations and yellow for tidying. A small original font supplement supplies a rounded block-style `ð` (U+00F0) through a Unicode-range font face, keeping “Stöðvar” correctly spelled and selectable. The original KN Yuanmo file is unchanged. Rebuild the supplement with `python3 fristundaspil/scripts/build-eth.py` (requires fontTools). Chrome verified the supplemental glyph loads and the clock legend renders the updated colours.
+
+All four views load the shared font definitions in `assets/yuanmo.css` and the same `assets/fristund-eth.ttf` supplement. Frístundahermirinn uses Yuanmo for its headings and header name, matching the other views.

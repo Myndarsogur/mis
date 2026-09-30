@@ -92,7 +92,7 @@ test('111 children in five age colours follow the afternoon and all go home',()=
  assert.equal(app.run('children.filter(c=>c.age>5).every(c=>childState(c,860).zone==="uti")'),true);
  assert.equal(app.run('children.filter(c=>c.age===5).every(c=>childState(c,890).zone==="uti")'),true);
  assert.equal(app.run('children.filter(c=>c.age>5).every(c=>["fondur","music","stud","matur"].includes(childState(c,890).zone))'),true);
- assert.equal(app.run('children.every(c=>childState(c,946).zone==="uti")'),true);
+ assert.equal(app.run('children.every(c=>childState(c,950).zone==="uti")'),true);
  assert.equal(app.run('children.every(c=>childState(c,990).status==="home")'),true);
  assert.equal(app.run('Math.max(...children.map(childDeparture))'),990);
 });
@@ -153,7 +153,7 @@ test('one dining guide stays inside while two support outdoors at the start and 
  const team=[...players,{id:'c',name:'Charlie',selected:true}];
  const app=setup({'fristundaspil-v2':JSON.stringify({players:team,assignments:{matur:['a','b','c']}})});
  assert.equal(app.run('gameStaff().filter(p=>p.role.id==="matur").length'),3);
- for(const time of [810,815,830,840,850,870,945,960,975,980]){
+ for(const time of [810,815,830,840,850,870,950,960,975,980]){
   assert.equal(app.run(`gameStaff().filter(p=>routePosition(staffRoute(p.role.id,p.roleIndex),200+p.index,${time},true).zone==='matur').length`),1);
   assert.equal(app.run(`gameStaff().filter(p=>routePosition(staffRoute(p.role.id,p.roleIndex),200+p.index,${time},true).zone==='uti').length`),2);
  }
@@ -169,7 +169,7 @@ test('one dining guide stays inside while two support outdoors at the start and 
 
 test('main heading follows the requested day milestones in both languages',()=>{
  const app=setup();
- for(const [time,title] of [[810,'Allir mæta til starfa'],[840,'Börnin eru sótt og skráð inn'],[841,'Útivist'],[884.9,'Útivist'],[885,'Stöðvar opna'],[944.9,'Stöðvar opna'],[945,'Stöðvar loka'],[946,'Útivist'],[989.9,'Útivist'],[990,'Öll komin heim']]){
+ for(const [time,title] of [[810,'Undirbúningur hafinn'],[840,'Móttaka barna'],[849.9,'Móttaka barna'],[850,'Útivist'],[884.9,'Útivist'],[885,'Stöðvar opna'],[939.9,'Stöðvar opna'],[940,'Ganga frá'],[949.9,'Ganga frá'],[950,'Útivist'],[989.9,'Útivist'],[990,'Öll komin heim']]){
   assert.equal(app.run(`translateUI(gamePhase(${time})[0])`),title);
  }
  app.run('go(2)');
@@ -181,4 +181,15 @@ test('responsive organic regions fit both wide and portrait canvases',()=>{
  for(const [width,height] of [[1600,700],[700,1050],[600,650]]){
   assert.equal(app.run(`Object.values(arrangeSchool(${width},${height})).every(a=>a.x>=0&&a.y>=0&&a.w>100&&a.h>0&&a.x+a.w<=${width}&&a.y+a.h<=${height})`),true);
  }
+});
+
+test('clock colours follow exact activity boundaries and day text lives in the header',()=>{
+ const app=setup();
+ for(const [minute,color] of [[810,'#edb5cd'],[840,'#b7dff0'],[850,'#bc9472'],[884.9,'#bc9472'],[885,'#8cc5b0'],[940,'#f0d36c'],[950,'#bc9472'],[990,'#b7dff0']]){
+  app.run(`gameMinute=${minute};updateGameClock()`);
+  assert.equal(app.element('#game-time').style.background,color);
+ }
+ assert.match(app.element('#header-game').innerHTML,/id="game-title"/);
+ assert.doesNotMatch(app.run('gameMarkup()'),/id="game-title"/);
+ assert.match(app.run('gameMarkup()'),/id="game-seek"/);
 });

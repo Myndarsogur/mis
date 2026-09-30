@@ -1,6 +1,12 @@
 'use strict';
 // Translate presentation in place: names, custom notes and simulation state stay intact.
 const icelandicUI = {
+ 'Preparation has begun':'Undirbúningur hafinn',
+ 'Welcoming children':'Móttaka barna',
+ 'Tidying up':'Ganga frá',
+ 'We prepare everything for the activity spaces. We get ready for the day and to welcome the children.':'Allt er tekið til fyrir rýmin. Við gerum okkur klár fyrir daginn. Við búum okkur undir að taka á móti börnunum.',
+ '15:40 · We tidy up the activity spaces and get ready to go outside.':'15:40 · Við göngum frá rýmunum og búum okkur undir að fara út.',
+ 'Enlarge clock':'Stækka klukku', 'Shrink clock':'Minnka klukku', 'Preparation':'Undirbúningur', 'Activity stations':'Stöðvar',
  'Image description':'Myndlýsing',
  "A guide holds a tablet beside a registration board with a blue sky, a four-part green roof and colourful panels.":"Leiðbeinandi heldur á spjaldtölvu við skráningartöflu með bláum himni, fjórskiptu grænu þaki og litríkum reitum.",
  "A guide and two children create together at a table with coloured paper, beads and clay.":"Leiðbeinandi og tvö börn skapa saman við borð með lituðum pappír, perlum og leir.",
@@ -18,13 +24,13 @@ const icelandicUI = {
  'Activity stations close':'Stöðvar loka',
  '13:30 · We prepare our spaces and get ready to welcome the children.':'13:30 · Við undirbúum rýmin og búum okkur undir að taka á móti börnunum.',
  '14:00 · A warm welcome, a quick check-in, and then outside.':'14:00 · Hlýjar móttökur, skráning og svo út að leika.',
- '14:00–14:45 · Fresh air and shared play; the youngest group settles indoors.':'14:00–14:45 · Ferskt loft og sameiginlegur leikur; yngsti hópurinn finnur sinn stað inni.',
+ '14:10–14:45 · Fresh air and shared play; the youngest group settles indoors.':'14:10–14:45 · Ferskt loft og sameiginlegur leikur; yngsti hópurinn finnur sinn stað inni.',
  '14:45 · Time to create, explore and find a favourite activity.':'14:45 · Tími til að skapa, kanna og finna eitthvað skemmtilegt að gera.',
  '15:45 · We tidy up together and head outside.':'15:45 · Við göngum frá saman og förum út.',
- '15:45–16:30 · We play outside and say goodbye as families arrive.':'15:45–16:30 · Við leikum úti og kveðjum börnin þegar þau eru sótt.',
+ '15:50–16:30 · We play outside and say goodbye as families arrive.':'15:50–16:30 · Við leikum úti og kveðjum börnin þegar þau eru sótt.',
 
  'Break':'Hlé','Restart afternoon':'Byrja daginn aftur','Game controls':'Stjórnun leiks','Day timeline':'Tímalína dagsins',
- 'The first dining guide stays inside. The other dining guides help outdoors before 14:45 and from 15:45.':'Fyrsti leiðbeinandinn í matsal er inni. Hinir leiðbeinendurnir aðstoða í útivist fyrir 14:45 og frá 15:45.',
+ 'The first dining guide stays inside. The other dining guides help outdoors before 14:45 and from 15:50.':'Fyrsti leiðbeinandinn í matsal er inni. Hinir leiðbeinendurnir aðstoða í útivist fyrir 14:45 og frá 15:50.',
  'One guide inside; the others help outdoors.':'Einn inni; hinir aðstoða í útivist.',
  'Play day':'Spila dag','Roles':'Hlutverk','Local time':'Tíminn núna','Guides':'Leiðbeinendur',
  'A place to belong at Túngata · The after-school game':'Griðarstaður við Túngötuna · Spilið frístund',
@@ -242,7 +248,7 @@ if(typeof MutationObserver!=='undefined'){
   observer.disconnect();translateNode(document.body);
   document.documentElement.lang=interfaceLanguage;
   document.title=interfaceLanguage==='is'?'Spilið frístund':'The Game · After-school';
-  logo.innerHTML=`<i class="brand-dot" aria-hidden="true"></i><span class="brand-words"><span class="brand-kicker">${interfaceLanguage==='is'?'spilið':'the game'}</span><span class="brand-name">${interfaceLanguage==='is'?'frístund':'after-school'}</span></span><small>${interfaceLanguage==='is'?'EN':'IS'}</small>`;
+  logo.innerHTML=`<span class="brand-words"><span class="brand-kicker">${interfaceLanguage==='is'?'spilið':'the game'}</span><span class="brand-name">${interfaceLanguage==='is'?'frístund':'after-school'}</span></span><small>${interfaceLanguage==='is'?'EN':'IS'}</small>`;
   logo.setAttribute('aria-label',interfaceLanguage==='is'?'Skipta yfir á ensku':'Switch to Icelandic');
   logo.title=logo.getAttribute('aria-label');
   observe();

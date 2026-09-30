@@ -62,27 +62,27 @@ let schoolAreas=wideSchoolAreas,gameNarrow=false;
 let gameMinute=GAME_START,gameRunning=false,gameSpeed=4,gameFrame=null,gameLastFrame=null,gameLastDraw=0;
 const gameClock=m=>`${String(Math.floor(m/60)).padStart(2,'0')}:${String(Math.floor(m%60)).padStart(2,'0')}`;
 function childArrival(c){return 840+(c.id%8)*.8;}
-function childDeparture(c){return 950+((c.id*43)%111)/110*40;}
+function childDeparture(c){return 952+((c.id*43)%111)/110*38;}
 function childRoute(c){
  const activity=['fondur','music','stud','matur'];
  const first=c.age===5?'yngstu':'uti';
  const route=[[810,'school'],[childArrival(c),'skraning'],[childArrival(c)+2,first],
  [885,c.age===5?'uti':activity[c.id%4]],[900,c.age===5?'uti':activity[(c.id+1)%4]],
  [915,c.age===5?'uti':activity[(c.id+2)%4]],[930,c.age===5?'uti':activity[(c.id+3)%4]],
- [945,'uti'],[childDeparture(c)-1,'skraning'],[childDeparture(c),'school']];
+ [950,'uti'],[childDeparture(c)-1,'skraning'],[childDeparture(c),'school']];
  return route;
 }
 function staffRoute(roleId,roleIndex=0){
  // One dining guide stays inside; the remaining guides support outdoor play.
  if(roleId==='matur')return roleIndex===0
   ? [[810,'matur'],[990,'school']]
-  : [[810,'uti'],[885,'matur'],[945,'uti'],[990,'school']];
+  : [[810,'uti'],[885,'matur'],[950,'uti'],[990,'school']];
  const indoor=['fondur','music','stud'];
  return [[810,roleId],[815,roleId],[830,roleId==='uti'?'uti':'school'],
  [840,roleId==='uti'?'uti':roleId==='yngstu'?'yngstu':'skraning'],
  [850,indoor.includes(roleId)?'uti':roleId],
  [885,roleId==='yngstu'?'uti':roleId],[900,roleId==='yngstu'?'uti':roleId],
- [945,roleId==='skraning'?'skraning':roleId==='matur'?'matur':'uti'],
+ [950,roleId==='skraning'?'skraning':roleId==='matur'?'matur':'uti'],
  [960,roleId==='skraning'?'skraning':roleId==='uti'||roleId==='yngstu'?'uti':roleId],
  [975,roleId==='yngstu'?'yngstu':roleId],[990,'school']];
 }
@@ -139,39 +139,51 @@ function currentActivity(roleId,minute){
  const index=roleDetails[roleId].schedule.indexOf(currentDuty(roleId,minute));
  return roleActivities[roleId][index][0];
 }
-function activityHeight(){return 29;}
+function activityHeight(){return 48;}
 function activityMarkup(roleId,minute){
- const split=roleId==='matur'&&owners(roles.find(r=>r.id===roleId)).length>1&&(minute<885||(minute>=945&&minute<990));
+ const split=roleId==='matur'&&owners(roles.find(r=>r.id===roleId)).length>1&&(minute<885||(minute>=950&&minute<990));
  return `<p><span>${split?'One guide inside; the others help outdoors.':currentActivity(roleId,minute)}</span></p>`;
 }
+const clockPeriods = [
+ [810,840,'#edb5cd','Preparation'],[840,850,'#b7dff0','Welcoming children'],
+ [850,885,'#bc9472','Outdoor time'],[885,940,'#8cc5b0','Activity stations'],
+ [940,950,'#f0d36c','Tidying up'],[950,990,'#bc9472','Outdoor time'],
+ [990,1020,'#b7dff0','Everyone home']
+];
+function clockColor(minute){return clockPeriods.find(([start,end])=>minute>=start&&minute<end)?.[2]||'#b7dff0';}
+function clockSector(start,end){
+ const point=m=>{const angle=(m%720)/720*Math.PI*2-Math.PI/2;return `${32+29*Math.cos(angle)} ${32+29*Math.sin(angle)}`;};
+ return `M32 32 L${point(start)} A29 29 0 0 1 ${point(end)} Z`;
+}
 function analogClock(){
- return `<svg class="analog-clock" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#fffdf5" stroke="#adbda0" stroke-width="2"/>${Array.from({length:12},(_,i)=>`<line x1="32" y1="5" x2="32" y2="${i%3===0?11:8}" stroke="#5c7351" stroke-width="${i%3===0?2:1}" transform="rotate(${i*30} 32 32)"/>`).join('')}<line id="hour-hand" x1="32" y1="32" x2="32" y2="17" stroke="#294b3b" stroke-width="4" stroke-linecap="round"/><line id="minute-hand" x1="32" y1="32" x2="32" y2="9" stroke="#294b3b" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="32" r="3" fill="#294b3b"/></svg>`;
+ return `<svg class="analog-clock" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 2C49 1 62 15 62 32S48 63 31 62S1 49 2 31S15 1 32 2Z" fill="#fffdf5" stroke="#49604b" stroke-width="1.2"/>${clockPeriods.map(([start,end,color])=>`<path d="${clockSector(start,end)}" fill="${color}" opacity=".85"/>`).join('')}${Array.from({length:12},(_,i)=>`<line x1="32" y1="4" x2="32" y2="${i%3===0?7:6}" stroke="#5c7351" stroke-width=".8" transform="rotate(${i*30} 32 32)"/>`).join('')}${[12,3,6,9].map(n=>{const a=n/12*Math.PI*2;return `<text x="${32+22*Math.sin(a)}" y="${34.5-22*Math.cos(a)}" text-anchor="middle" font-family="KN Yuanmo SC,Arial,sans-serif" font-size="7" fill="#344831">${n}</text>`;}).join('')}<g fill="none" stroke="#755320" stroke-width=".8"><circle cx="47" cy="26" r="2"/><path d="M47 22v1m0 6v1m-4-4h1m6 0h1"/></g><path d="M43 43l3-3 3 3v4h-6z" fill="#fffdf5" stroke="#4b5481" stroke-width=".8"/><line id="hour-hand" x1="32" y1="32" x2="32" y2="17" stroke="#294b3b" stroke-width="3" stroke-linecap="round"/><line id="minute-hand" x1="32" y1="32" x2="32" y2="9" stroke="#294b3b" stroke-width="1.7" stroke-linecap="round"/><circle cx="32" cy="32" r="2.5" fill="#e78865" stroke="#294b3b"/></svg>`;
 }
 function guideLegend(){return `<svg viewBox="-15 -23 30 48" aria-hidden="true"><circle cy="-12" r="7" fill="#f3d7b5" stroke="#324731" stroke-width="1.5"/><path d="M-8-3Q0-7 8-3L12 14H-12Z" fill="#d4e4ed" stroke="#324731" stroke-width="2.5"/><path d="M-5 14V20M5 14V20" stroke="#324731" stroke-width="3"/></svg><span>Guides</span>`;}
 function gamePhase(minute){
  if(minute>=990)return ['Everyone home','The school is quiet. The team has finished the afternoon.'];
- if(minute>=946)return ['Outdoor time','15:45–16:30 · We play outside and say goodbye as families arrive.'];
- if(minute>=945)return ['Activity stations close','15:45 · We tidy up together and head outside.'];
+ if(minute>=950)return ['Outdoor time','15:50–16:30 · We play outside and say goodbye as families arrive.'];
+ if(minute>=940)return ['Tidying up','15:40 · We tidy up the activity spaces and get ready to go outside.'];
  if(minute>=885)return ['Activity stations open','14:45 · Time to create, explore and find a favourite activity.'];
- if(minute>=841)return ['Outdoor time','14:00–14:45 · Fresh air and shared play; the youngest group settles indoors.'];
- if(minute>=840)return ['Children are collected and checked in','14:00 · A warm welcome, a quick check-in, and then outside.'];
- return ['Everyone arrives for work','13:30 · We prepare our spaces and get ready to welcome the children.'];
+ if(minute>=850)return ['Outdoor time','14:10–14:45 · Fresh air and shared play; the youngest group settles indoors.'];
+ if(minute>=840)return ['Welcoming children','14:00 · A warm welcome, a quick check-in, and then outside.'];
+ return ['Preparation has begun','We prepare everything for the activity spaces. We get ready for the day and to welcome the children.'];
 }
 function gameStaff(){return selected().filter(p=>playerRole(p.id)).map((p,i)=>{
  const role=playerRole(p.id);
  return {...p,role,index:i,roleIndex:owners(role).findIndex(owner=>owner.id===p.id)};
 });}
 function guideDuty(p,minute){
- const outside=p.role.id==='matur'&&p.roleIndex>0&&(minute<885||(minute>=945&&minute<990));
+ const outside=p.role.id==='matur'&&p.roleIndex>0&&(minute<885||(minute>=950&&minute<990));
  return currentDuty(outside?'uti':p.role.id,minute);
 }
 function renderGameHeader(){
- document.querySelector('#header-game').innerHTML=`<div class="simulation-clocks">${analogClock()}<time id="game-time">${gameClock(gameMinute)}</time></div><div class="header-playback"><button id="game-play">${gameRunning?'Break':'Play afternoon'}</button><button id="game-reset" class="outline" aria-label="Restart afternoon" title="Restart afternoon">↺</button><label class="speed-control"><span class="sr-only">Speed</span><select id="game-speed" aria-label="Speed">${[4,8,16,1].map(n=>`<option value="${n}" ${gameSpeed===n?'selected':''}>${n}×</option>`).join('')}</select></label></div>`;
+ document.querySelector('#header-game').innerHTML=`<div class="header-day"><h1 id="game-title" aria-live="polite">${gamePhase(gameMinute)[0]}</h1><p id="game-description" class="game-description">${gamePhase(gameMinute)[1]}</p></div><div class="simulation-clocks"><button id="clock-expand" aria-label="Enlarge clock" aria-expanded="false">${analogClock()}</button><time id="game-time">${gameClock(gameMinute)}</time><div class="clock-key">${clockPeriods.filter((_,i)=>i!==5).map(([start,end,color,label])=>`<span><i style="background:${color}"></i><span>${label}</span><small>${label==='Outdoor time'?'14:10–14:45 / 15:50–16:30':label==='Everyone home'?'16:30':`${gameClock(start)}–${gameClock(end)}`}</small></span>`).join('')}</div></div><div class="header-playback"><button id="game-play">${gameRunning?'Break':'Play afternoon'}</button><button id="game-reset" class="outline" aria-label="Restart afternoon" title="Restart afternoon"><svg viewBox="0 0 32 24" aria-hidden="true"><path d="M15 4L4 12l11 8zM28 4l-11 8 11 8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button><label class="speed-control"><span class="sr-only">Speed</span><select id="game-speed" aria-label="Speed">${[4,8,16,1].map(n=>`<option value="${n}" ${gameSpeed===n?'selected':''}>${n}×</option>`).join('')}</select></label></div>`;
  updateGameClock();
 }
 function updateGameClock(){
  const time=document.querySelector('#game-time');if(!time)return;
  time.textContent=gameClock(gameMinute);
+ time.style.background=clockColor(gameMinute);
  document.querySelector('#hour-hand').setAttribute('transform',`rotate(${(gameMinute%720)/2} 32 32)`);
  document.querySelector('#minute-hand').setAttribute('transform',`rotate(${(gameMinute%60)*6} 32 32)`);
 }
@@ -181,11 +193,8 @@ function gameMarkup(){
  const width=gameNarrow?680:1000,height=gameNarrow?890:820,school=schoolAreas.school,garden=schoolAreas.uti;
 
  const unstaffed=roles.filter(r=>!owners(r).length);
- return `<section class="game-shell" aria-label="School simulation"><div class="game-top"><div><p class="eyebrow">A place to belong at Túngata · The after-school game</p><h1 id="game-title" aria-live="polite">${gamePhase(gameMinute)[0]}</h1></div><span class="game-count" id="game-count"></span></div>
-
- <p id="game-description" class="game-description"></p>
- <label class="game-scrub"><span>13:30 <span>Move through the afternoon</span> 16:30</span><input id="game-seek" type="range" min="810" max="990" step="0.1" value="${gameMinute}" aria-label="Simulation time"></label>
- <div class="game-legend">${childGroups.map(g=>`<span><i style="--piece:${g.color}"></i><span>${childGroupLabel(g.age)}</span><small>· ${g.count}</small></span>`).join('')}<span class="staff-key-game">${guideLegend()}</span></div>
+ return `<section class="game-shell" aria-label="School simulation"> <label class="game-scrub"><span>13:30 <span>Move through the afternoon</span> 16:30</span><input id="game-seek" type="range" min="810" max="990" step="0.1" value="${gameMinute}" aria-label="Simulation time"></label>
+ <div class="game-legend"><span class="game-count" id="game-count"></span>${childGroups.map(g=>`<span><i style="--piece:${g.color}"></i><span>${childGroupLabel(g.age)}</span><small>· ${g.count}</small></span>`).join('')}<span class="staff-key-game">${guideLegend()}</span></div>
  <div class="school-board">${schoolMarkup(width,height)}</div>
  
  <p class="game-note">Illustrative school layout and age split, not live attendance. 1× = one simulated minute per second. ${unstaffed.length?`${unstaffed.length} roles have no guide — assign your team in Team & roles.`:'All seven roles have guides.'}${selected().some(p=>!playerRole(p.id))?' Unassigned guides remain in the Guide list.':''}</p>
@@ -198,7 +207,7 @@ function schoolMarkup(width,height){
  <rect width="${width}" height="${height}" rx="22" fill="#edf0e5"/><rect width="${width}" height="${height}" rx="22" fill="url(#board-dots)"/>
  
  <rect x="${school.x}" y="${school.y}" width="${school.w}" height="${school.h}" rx="14" fill="#e1e6da"/><text x="45" y="40" class="school-label">CLASSROOMS · ARRIVALS / HOME</text>
- ${roles.map((r,index)=>{const a=schoolAreas[r.id];return `<g class="school-zone" data-open-role="${r.id}" role="button" tabindex="0" aria-label="${r.name}: open schedule"><path class="area-shape" d="${areaShape(a,index)}" fill="${r.tint}" stroke="#fffdf5" stroke-width="3"/><text x="${a.x+20}" y="${a.y+29}" class="school-label">${a.label} ↗</text><foreignObject x="${a.x+15}" y="${a.y+37}" width="${a.w-30}" height="${activityHeight(r.id)}"><div xmlns="http://www.w3.org/1999/xhtml" class="on-board-activities role-story" data-activity-role="${r.id}" data-activity-time="${currentDuty(r.id,gameMinute)[0]}" aria-label="Current guide activities">${activityMarkup(r.id,gameMinute)}</div></foreignObject></g>`;}).join('')}
+ ${roles.map((r,index)=>{const a=schoolAreas[r.id];return `<g class="school-zone" data-open-role="${r.id}" role="button" tabindex="0" aria-label="${r.name}: open schedule"><path class="area-shape" d="${areaShape(a,index)}" fill="${r.tint}" stroke="#fffdf5" stroke-width="3"/><text x="${a.x+20}" y="${a.y+29}" class="school-label">${a.label} ↗</text><foreignObject x="${a.x+15}" y="${a.y+42}" width="${a.w-30}" height="${activityHeight(r.id)}"><div xmlns="http://www.w3.org/1999/xhtml" class="on-board-activities role-story" data-activity-role="${r.id}" data-activity-time="${currentDuty(r.id,gameMinute)[0]}" aria-label="Current guide activities">${activityMarkup(r.id,gameMinute)}</div></foreignObject></g>`;}).join('')}
 
  <g aria-hidden="true" fill="#7b9e64" opacity=".35"><circle cx="${garden.x+garden.w-50}" cy="${garden.y+garden.h-50}" r="23"/><circle cx="${garden.x+garden.w-90}" cy="${garden.y+garden.h-37}" r="17"/><circle cx="${garden.x+52}" cy="${garden.y+garden.h-53}" r="19"/></g>
  <g id="child-pieces" aria-hidden="true">${children.map(c=>`<g data-child="${c.id}" fill="${c.color}" stroke="#ffffff" stroke-width=".9"><title>Child ${c.id+1} · ${childGroupLabel(c.age)}</title><circle cy="-4" r="4"/><path d="M-4 1Q0-2 4 1L6 8H-6Z"/></g>`).join('')}</g>
@@ -254,6 +263,8 @@ function mountGame(){
 }
 
 document.addEventListener('click',e=>{
+ const expand=e.target.closest('#clock-expand');
+ if(expand){const open=expand.getAttribute('aria-expanded')!=='true';expand.setAttribute('aria-expanded',String(open));expand.setAttribute('aria-label',open?'Shrink clock':'Enlarge clock');document.querySelector('.simulation-clocks').classList.toggle('expanded',open);}
  if(e.target.closest('#game-play')){
   if(state.step!==2)go(2);
   if(gameMinute>=GAME_END)gameMinute=GAME_START;
@@ -264,6 +275,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('change',e=>{if(e.target.id==='game-speed')gameSpeed=Number(e.target.value);});
 document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'){document.querySelector('.simulation-clocks').classList.toggle('expanded',false);const clock=document.querySelector('#clock-expand');clock.setAttribute('aria-expanded','false');clock.setAttribute('aria-label','Enlarge clock');}
  const zone=e.target.closest('.school-zone');
  if(zone&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openRole(zone.dataset.openRole);}
 });

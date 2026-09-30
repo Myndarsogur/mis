@@ -72,7 +72,7 @@ function openRole(id){
  const r=roles.find(r=>r.id===id);if(!r)return;openRoleId=id;
  const location=state.locations[id]||roleDetails[id].location;
  const locationMarkup=`<p class="role-location" ${state.locations[id]?'data-user-content':''}>${esc(location)}</p>`;
- $('#role-dialog-content').innerHTML=`<div class="schedule-heading" style="--tint:${r.tint}"><h2 id="role-title">${r.name}</h2></div><figure class="role-illustration"><img src="assets/${roleIllustrations[id]}" width="1536" height="1024" alt="${esc(roleDetails[id].illustration)}"><figcaption>${locationMarkup}</figcaption></figure><div class="schedule-body">${id==='matur'?'<p class="note">The first dining guide stays inside. The other dining guides help outdoors before 14:45 and from 15:45.</p>':''}<ol class="schedule">${roleDetails[id].schedule.map(([time,text])=>`<li><span class="schedule-time">${time}</span><p>${text}</p></li>`).join('')}</ol></div>`;
+ $('#role-dialog-content').innerHTML=`<div class="schedule-heading" style="--tint:${r.tint}"><h2 id="role-title">${r.name}</h2></div><figure class="role-illustration"><img src="assets/${roleIllustrations[id]}" width="1536" height="1024" alt="${esc(roleDetails[id].illustration)}"><figcaption>${locationMarkup}</figcaption></figure><div class="schedule-body">${id==='matur'?'<p class="note">The first dining guide stays inside. The other dining guides help outdoors before 14:45 and from 15:50.</p>':''}<ol class="schedule">${roleDetails[id].schedule.map(([time,text])=>`<li><span class="schedule-time">${time}</span><p>${text}</p></li>`).join('')}</ol></div>`;
  if(!$('#role-dialog').open)$('#role-dialog').showModal();
 }
 function render(){
