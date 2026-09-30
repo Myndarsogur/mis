@@ -248,7 +248,7 @@ if(typeof MutationObserver!=='undefined'){
   observer.disconnect();translateNode(document.body);
   document.documentElement.lang=interfaceLanguage;
   document.title=interfaceLanguage==='is'?'Spilið frístund':'The Game · After-school';
-  logo.innerHTML=`<span class="brand-words"><span class="brand-kicker">${interfaceLanguage==='is'?'spilið':'the game'}</span><span class="brand-name">${interfaceLanguage==='is'?'frístund':'after-school'}</span></span><small>${interfaceLanguage==='is'?'EN':'IS'}</small>`;
+  logo.innerHTML=`<span class="brand-words"><span class="brand-kicker">${interfaceLanguage==='is'?'spilið':'play'}</span><span class="brand-name">${interfaceLanguage==='is'?'frístund':'after-school'}</span></span><small>${interfaceLanguage==='is'?'EN':'IS'}</small>`;
   logo.setAttribute('aria-label',interfaceLanguage==='is'?'Skipta yfir á ensku':'Switch to Icelandic');
   logo.title=logo.getAttribute('aria-label');
   observe();
