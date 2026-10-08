@@ -3,6 +3,7 @@
  'use strict';
  if (window.Lif) return;
  const PARENTS = new Set(['https://xn--lf-nja.is', 'https://www.xn--lf-nja.is']);
+ const FAMILY = new Set(['https://myndarsogur.is', 'https://www.myndarsogur.is', 'https://verslun.myndarsogur.is']);
  const loopback = h => ['localhost', '127.0.0.1', '[::1]'].includes(h);
  let parentOrigin = null, connected = false, custom = {}, last = '', timer;
  const clean = text => typeof text === 'string' ? text.trim().slice(0, 180) : '';
@@ -15,6 +16,7 @@
  };
  function trusted(origin) {
   if (PARENTS.has(origin)) return true;
+  if (/^\/lesa\//.test(location.pathname) && FAMILY.has(location.origin) && FAMILY.has(origin)) return true;
   try { return loopback(location.hostname) && loopback(new URL(origin).hostname); } catch { return false; }
  }
  function send(type, value = {}) {
@@ -30,6 +32,15 @@
  window.Lif = Object.freeze({
   get connected() { return connected; },
   update(value = {}) { custom = {title: clean(value.title), label: clean(value.label)}; soon(); },
+  report(value = {}) {
+   // Verslunin getur miðlað stöðu úr sínum eigin, sérstaklega sannreynda lesaraglugga.
+   try {
+    const url = new URL(value.url);
+    if (FAMILY.has(location.origin) && FAMILY.has(url.origin) && /^\/lesa\//.test(url.pathname)) {
+     send('position', {url: url.href, title: clean(value.title), label: clean(value.label), scroll: Math.max(0, Math.min(100000, Number(value.scroll) || 0)), nested: true});
+    }
+   } catch {}
+  },
   close() { send('close'); },
   fullscreen(value = true) { send('fullscreen', {value: Boolean(value)}); },
   navigate(url) { try { send('navigate', {url: new URL(url, location.href).href}); } catch {} },
