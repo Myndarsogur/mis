@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "id": "fristund",
+  "name": "Frístund",
+  "url": "https://mis.is/",
+  "icon": "https://xn--lf-nja.is/takn/fristund.svg",
+  "color": "graen",
+  "links": [
+    {
+      "id": "0",
+      "title": "Allt byrjar á halló",
+      "url": "https://mis.is/#kafli=0",
+      "description": "Velkomin í frístund",
+      "type": "Síða"
+    },
+    {
+      "id": "1",
+      "title": "Ég er mætt!",
+      "url": "https://mis.is/#kafli=1",
+      "description": "Skráning og upphaf dagsins",
+      "type": "Síða"
+    },
+    {
+      "id": "2",
+      "title": "Finndu þinn stað",
+      "url": "https://mis.is/#kafli=2",
+      "description": "Útivist, föndur, hressing, tónlist og vísindi",
+      "type": "Síða"
+    },
+    {
+      "id": "3",
+      "title": "Fólkið okkar",
+      "url": "https://mis.is/#kafli=3",
+      "description": "Hlutverk starfsfólksins",
+      "type": "Síða"
+    },
+    {
+      "id": "4",
+      "title": "Við hjálpumst að",
+      "url": "https://mis.is/#kafli=4",
+      "description": "Bjóða öðrum með og biðja um hjálp",
+      "type": "Síða"
+    },
+    {
+      "id": "5",
+      "title": "Sjáumst aftur",
+      "url": "https://mis.is/#kafli=5",
+      "description": "Ganga frá og kveðja",
+      "type": "Síða"
+    },
+    {
+      "id": "6",
+      "title": "Spilið Frístund",
+      "url": "https://mis.is/fristundaspil/",
+      "description": "Leiðbeinendur og hlutverk í deginum",
+      "type": "Síða"
+    },
+    {
+      "id": "7",
+      "title": "Frístundahermirinn",
+      "url": "https://mis.is/fristundahermirinn/",
+      "description": "Gagnvirkur frístundadagur",
+      "type": "Síða"
+    }
+  ],
+  "search": [
+    {
+      "id": "0",
+      "title": "Allt byrjar á halló",
+      "url": "https://mis.is/#kafli=0",
+      "description": "Velkomin í frístund",
+      "type": "Síða"
+    },
+    {
+      "id": "1",
+      "title": "Ég er mætt!",
+      "url": "https://mis.is/#kafli=1",
+      "description": "Skráning og upphaf dagsins",
+      "type": "Síða"
+    },
+    {
+      "id": "2",
+      "title": "Finndu þinn stað",
+      "url": "https://mis.is/#kafli=2",
+      "description": "Útivist, föndur, hressing, tónlist og vísindi",
+      "type": "Síða"
+    },
+    {
+      "id": "3",
+      "title": "Fólkið okkar",
+      "url": "https://mis.is/#kafli=3",
+      "description": "Hlutverk starfsfólksins",
+      "type": "Síða"
+    },
+    {
+      "id": "4",
+      "title": "Við hjálpumst að",
+      "url": "https://mis.is/#kafli=4",
+      "description": "Bjóða öðrum með og biðja um hjálp",
+      "type": "Síða"
+    },
+    {
+      "id": "5",
+      "title": "Sjáumst aftur",
+      "url": "https://mis.is/#kafli=5",
+      "description": "Ganga frá og kveðja",
+      "type": "Síða"
+    },
+    {
+      "id": "6",
+      "title": "Spilið Frístund",
+      "url": "https://mis.is/fristundaspil/",
+      "description": "Leiðbeinendur og hlutverk í deginum",
+      "type": "Síða"
+    },
+    {
+      "id": "7",
+      "title": "Frístundahermirinn",
+      "url": "https://mis.is/fristundahermirinn/",
+      "description": "Gagnvirkur frístundadagur",
+      "type": "Síða"
+    }
+  ],
+  "capabilities": [
+    "title",
+    "location",
+    "close",
+    "fullscreen",
+    "resume"
+  ],
+  "today": [],
+  "daily": {
+    "items": [
+      {
+        "id": "0",
+        "title": "Allt byrjar á halló",
+        "url": "https://mis.is/#kafli=0",
+        "description": "Velkomin í frístund",
+        "type": "Síða"
+      },
+      {
+        "id": "1",
+        "title": "Ég er mætt!",
+        "url": "https://mis.is/#kafli=1",
+        "description": "Skráning og upphaf dagsins",
+        "type": "Síða"
+      },
+      {
+        "id": "2",
+        "title": "Finndu þinn stað",
+        "url": "https://mis.is/#kafli=2",
+        "description": "Útivist, föndur, hressing, tónlist og vísindi",
+        "type": "Síða"
+      },
+      {
+        "id": "3",
+        "title": "Fólkið okkar",
+        "url": "https://mis.is/#kafli=3",
+        "description": "Hlutverk starfsfólksins",
+        "type": "Síða"
+      },
+      {
+        "id": "4",
+        "title": "Við hjálpumst að",
+        "url": "https://mis.is/#kafli=4",
+        "description": "Bjóða öðrum með og biðja um hjálp",
+        "type": "Síða"
+      },
+      {
+        "id": "5",
+        "title": "Sjáumst aftur",
+        "url": "https://mis.is/#kafli=5",
+        "description": "Ganga frá og kveðja",
+        "type": "Síða"
+      }
+    ]
+  }
+}

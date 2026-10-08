@@ -9,7 +9,9 @@ const places={
  play:{title:'Leikum saman',color:'#ff783d',text:'Stundum langar okkur að spila, dansa, byggja eða bara slaka á. Við æfum okkur að hlusta, skiptast á og bjóða öðrum með. Stuðningur er til staðar þegar hans er þörf.',tip:'„Viltu vera með?“ getur verið byrjunin á góðum degi.'}
 };
 const titles=['Allt byrjar á halló','Ég er mætt!','Finndu þinn stað','Fólkið okkar','Við hjálpumst að','Sjáumst aftur'];
-let chapter=0;const solved=new Set();const visited=new Set();
+let prior;try{prior=JSON.parse(localStorage.getItem('fristund-ferd')||'null')}catch{}
+const chapterFromURL=()=>{const m=location.hash.match(/^#kafli=(\d)$/);return m&&Number(m[1])<6?Number(m[1]):null};
+let chapter=chapterFromURL()??(Number.isInteger(prior?.chapter)&&prior.chapter<6&&prior.chapter>=0?prior.chapter:0);const solved=new Set((prior?.solved||[]).filter(n=>Number.isInteger(n)&&n>=0&&n<6));const visited=new Set((prior?.visited||[]).filter(k=>Object.hasOwn(places,k)));
 function openDetail(html){$('#detail-content').innerHTML=html;$('#detail').showModal()}
 function place(key){const p=places[key];visited.add(key);openDetail(`<div class="eyebrow"><i style="--c:${p.color}"></i> KÍKTU INN</div><h2>${p.title}</h2><p>${p.text}</p><p><strong>${p.tip}</strong></p>`);if(chapter===2)render(false)}
 document.querySelectorAll('[data-place]').forEach(b=>b.onclick=()=>place(b.dataset.place));
@@ -19,7 +21,11 @@ $('#sound').onclick=()=>{const off=document.body.classList.toggle('no-motion');$
 const roles=[['#f77be2','Kindergarten — 5 ára','5 ára börnin eru inni kl. 14:00 og fara í útivist kl. 14:45. Starfsfólkið fylgir hópnum í leik inni og úti.'],['#68bce9','Skráning','Öll börn eru skráð inn.'],['#327b37','Föndur og fjör','Þar sem dansinn dunar og myndirnar klippast og límast.'],['#70c83e','Music and science','Settar eru upp stöðvar og ýmist fara börnin af stað í sérverkefni eða útivist.'],['#ff783d','Stuð','Í gegnum allt starfið er starfsfólk að veita stuðning með ýmsum hætti.'],['#b6947d','Úti','Öll fara í útivist og því er mikilvægt að vera með öll viðeigandi föt fyrir það.'],['#ffce30','Matsalur','Hressing og leikur í opnu stóru rými. Hér er oft mikið um að vera.']];
 function buttons(next='Áfram'){return `<button class="primary" id="next">${next} <span>→</span></button>${chapter?'<button class="back" id="back">← Til baka</button>':''}`}
 function quiz(question,answers,correct,explanation){return `<p class="intro">${question}</p><div class="choices">${answers.map((a,i)=>`<button class="choice" data-answer="${i}" data-correct="${correct}">${a}</button>`).join('')}</div><div class="feedback" role="status" data-explanation="${explanation}">${solved.has(chapter)?explanation:''}</div>`}
-function render(focus=true){let html='';
+function render(focus=true){
+try{localStorage.setItem('fristund-ferd',JSON.stringify({chapter,solved:[...solved],visited:[...visited]}));}catch{}
+if(window.Lif?.connected)history.replaceState(null,'','#kafli='+chapter);
+window.Lif?.update({title:'Frístund',label:`${chapter+1}/6 · ${titles[chapter]}`});
+let html='';
 if(chapter===0)html=`<h1>Hér er pláss<br>fyrir <em>þig.</em></h1><p class="intro">Velkomin í litríka heiminn okkar.<br>Hér leikum við, prófum nýja hluti og lærum að vera saman.</p><div class="tiny-note"><span>◷</span> Um 5 mínútur · 6 litlir kaflar · Þinn hraði</div>${buttons('Förum í frístund')}<div class="welcome-bottom"><img class="rings" src="assets/rings.png" alt="Handmálaðir hringir í regnbogalitunum"><div class="handnote">Fyrir litla og stóra.<br>Og alla þar á milli.</div></div>`;
 if(chapter===1)html=`<h1 class="small">Dagurinn byrjar<br>á <em>halló!</em></h1>${quiz('Þú ert komin í frístund og heyrir vini þína leika. Hvað gerirðu fyrst?',['Læt starfsfólk í skráningu vita að ég sé mætt.','Fer beint að leika án þess að láta vita.'],0,'Já! Skráning hjálpar starfsfólkinu að vita hver er á staðnum. Nú getur leikurinn hafist.')}${buttons()}`;
 if(chapter===2)html=`<h1 class="small">Einn staður.<br><em>Margt að gera.</em></h1><p class="intro">Kl. 14:00 eru allir úti. Kl. 14:45 hafa börnin valið sér stöðvar. Prófaðu tímana á kortinu og kíktu inn á að minnsta kosti þrjá staði.</p><div class="choices">${Object.entries(places).map(([k,p])=>`<button class="choice" data-visit="${k}">${visited.has(k)?'✓':'↗'} ${p.title}</button>`).join('')}</div><div class="feedback" role="status">${visited.size} af ${Object.keys(places).length} stöðum skoðaðir${visited.size>=3?' — flott könnunarferð!':''}</div>${buttons()}`;
@@ -33,3 +39,6 @@ document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>{const [c,n,t]
 document.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{const good=b.dataset.answer===b.dataset.correct;$('.feedback').textContent=good?$('.feedback').dataset.explanation:'Prófum aftur. Hvað hjálpar öllum að líða vel og vita hvert af öðru?';if(good){solved.add(chapter);document.querySelectorAll('[data-answer]').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}});
 $('#next').onclick=()=>{if([1,4,5].includes(chapter)&&!solved.has(chapter)){$('.feedback').textContent='Veldu svar hér að ofan áður en þú heldur áfram.';return}if(chapter===2&&visited.size<3){$('.feedback').textContent='Kíktu inn á þrjá staði til að kynnast frístundinni.';return}solved.add(chapter);if(chapter<5){chapter++;render()}else{$('#finish').innerHTML='<h2>Þú þekkir heiminn okkar! ✳</h2><p class="intro">Láta vita. Prófa eitthvað nýtt. Bjóða með. Biðja um hjálp. Það er frístund.</p><button class="primary" id="restart">Förum aftur ↻</button>';$('#restart').onclick=()=>{chapter=0;solved.clear();visited.clear();render()}}};if($('#back'))$('#back').onclick=()=>{chapter--;render()};if(focus){$('#story').focus({preventScroll:true});if(window.innerWidth<801)$('#story').scrollIntoView({behavior:'auto'})}}
 render(false);
+
+addEventListener('hashchange',()=>{const n=chapterFromURL();if(n!==null&&n!==chapter){chapter=n;render(false)}});
+addEventListener('lif:connected',()=>render(false));

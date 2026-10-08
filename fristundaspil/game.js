@@ -60,6 +60,7 @@ function areaShape(a,index){
 let boardObserver=null,boardSizeKey='';
 let schoolAreas=wideSchoolAreas,gameNarrow=false;
 let gameMinute=GAME_START,gameRunning=false,gameSpeed=4,gameFrame=null,gameLastFrame=null,gameLastDraw=0;
+try{const saved=Number(localStorage.getItem('fristund-game-minute'));if(saved>=GAME_START&&saved<=GAME_END)gameMinute=saved;}catch{}
 const gameClock=m=>`${String(Math.floor(m/60)).padStart(2,'0')}:${String(Math.floor(m%60)).padStart(2,'0')}`;
 function childArrival(c){return 840+(c.id%8)*.8;}
 function childDeparture(c){return 952+((c.id*43)%111)/110*38;}
@@ -176,7 +177,10 @@ function guideDuty(p,minute){
  const outside=p.role.id==='matur'&&p.roleIndex>0&&(minute<885||(minute>=950&&minute<990));
  return currentDuty(outside?'uti':p.role.id,minute);
 }
+function lifGamePosition(){try{localStorage.setItem('fristund-game-minute',String(gameMinute));}catch{} window.Lif?.update({title:'Frístund',label:state.step===2?'Dagurinn kl. '+gameClock(gameMinute):'Hlutverk og leiðbeinendur'});}
+window.addEventListener('lif:connected',lifGamePosition);window.addEventListener('pagehide',lifGamePosition);
 function renderGameHeader(){
+ lifGamePosition();
  document.querySelector('#header-game').innerHTML=`<div class="header-day"><h1 id="game-title" aria-live="polite">${gamePhase(gameMinute)[0]}</h1><p id="game-description" class="game-description">${gamePhase(gameMinute)[1]}</p></div><div class="simulation-clocks"><button id="clock-expand" aria-label="Enlarge clock" aria-expanded="false">${analogClock()}</button><time id="game-time">${gameClock(gameMinute)}</time><div class="clock-key">${clockPeriods.filter((_,i)=>i!==5).map(([start,end,color,label])=>`<span><i style="background:${color}"></i><span>${label}</span><small>${label==='Outdoor time'?'14:10–14:45 / 15:50–16:30':label==='Everyone home'?'16:30':`${gameClock(start)}–${gameClock(end)}`}</small></span>`).join('')}</div></div><div class="header-playback"><button id="game-play">${gameRunning?'Break':'Play afternoon'}</button><button id="game-reset" class="outline" aria-label="Restart afternoon" title="Restart afternoon"><svg viewBox="0 0 32 24" aria-hidden="true"><path d="M15 4L4 12l11 8zM28 4l-11 8 11 8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button><label class="speed-control"><span class="sr-only">Speed</span><select id="game-speed" aria-label="Speed">${[4,8,16,1].map(n=>`<option value="${n}" ${gameSpeed===n?'selected':''}>${n}×</option>`).join('')}</select></label></div>`;
  updateGameClock();
 }
@@ -225,6 +229,7 @@ function fitSchoolBoard(){
  drawGame();
 }
 function drawGame(){
+ if(Math.floor(gameMinute)!==drawGame.savedMinute){drawGame.savedMinute=Math.floor(gameMinute);lifGamePosition();}
  const svg=document.querySelector('#school-svg');if(!svg)return;
  for(const r of roles){
   const panel=svg.querySelector(`[data-activity-role="${r.id}"]`),time=currentDuty(r.id,gameMinute)[0];
